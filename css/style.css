@@ -1,0 +1,241 @@
+html { height: 100%; }
+
+body {
+  color:       #6c6c6c;
+  height:      92%;
+  font-family: "Typewriterhand";
+  -webkit-transition: background 0.6s ease;
+}
+
+body#day {
+  background: #fcfbf7 url("../resources/img/bg-day.png") repeat-x bottom;
+}
+
+body#night {
+  background: #191919 url("../resources/img/bg-night.png") repeat-x bottom;
+}
+
+h1 {
+  margin:    55px;
+  display:   none;
+  font-size: 60px;  
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  margin-right: 17px;
+  background-color: #e1ddb7;
+}
+
+p { padding: 10px 0 0 10px; }
+
+text { font-size: 20px; }
+
+#clockWidget, #timeDisplay {
+  top:           50%;
+  left:          50%;  
+  position: absolute;
+}
+
+#clockWidget {
+  margin-top:  -200px;
+  margin-left: -300px;
+}
+
+#timeDisplay { display: none; }
+
+#timeDisplay.horizontal {
+  width:        150px;
+  margin-top:  -150px;
+  margin-left: -515px;
+}
+
+#timeDisplay.vertical {
+  width:         448px;
+  margin-top:    230px;
+  margin-left:  -224px;
+  display: -webkit-box;
+}
+
+#timeDisplay.horizontal div { height: 100px; }
+  
+#timeDisplay.vertical div { 
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  -webkit-box-flex: 1;
+}
+
+#timeDisplay span.label {
+  float:       left;
+  font-size:   40px;
+  line-height: 95px;
+}
+
+#timeDisplay span.time { font-size: 35px; }
+
+#timeDisplay span.horizontal {
+  float:       right;
+  line-height: 100px;
+}
+
+#optionPanel, #optionTab {
+  width:  275px;
+  height: 275px;
+}
+
+#optionPanel {
+  top:             50%;  
+  left:           100%;
+  position:   absolute;
+  margin-top: -137.5px;
+  margin-left:  -275px;
+}
+
+#optionTab {
+  -webkit-transform: rotate( 270deg );
+}
+
+#optionTab rect { fill: #f1eedc; }
+
+#optionControls {
+  top:         -279px;
+  width:        235px;
+  height:       260px;
+  display:      none;
+  position:     relative;
+  margin-left:  20px;
+  padding-top:  14px;
+  padding-left: 20px;
+}
+
+#optionControls div span {
+  display:  inline-block;
+  vertical-align: middle;
+}
+
+#titleBtnLabel, #timeDisplayBtnLabel, #blockNumberBtnLabel {
+  margin-bottom: -4px;
+  width:         44px;
+}
+
+#layout { padding-top: 2px; }
+
+#layout, #mode { height: 59px; }
+
+#layoutLabel, #modeLabel {
+  width:    140px;  
+  margin-top: 3px;
+}
+
+#colorPaletteLabel { height: 30px; }
+
+@font-face {
+  font-family: "Typewriterhand";
+  src: url(../resources/Typewriterhand.otf);
+}
+
+
+/*
+ * The below style rules were adapted from
+ * jQuery UI CSS Framework 1.8.18
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Theming/API
+ */
+
+/* Component containers
+----------------------------------*/
+.ui-widget {
+  color:       #6c6c6c;
+  font-size:   .9em;  
+  font-family: "Typewriterhand";
+}
+
+.ui-button {
+  padding:         0;
+  position:        relative;
+  margin-top:      5px;
+  margin-right:   .1em;
+  margin-bottom:   5px;
+  cursor:          pointer;
+  text-align:      center;
+  text-decoration: none !important;
+  -webkit-transition: background 0.4s ease;
+}
+
+/* Interaction states
+----------------------------------*/
+.ui-state-default {
+  border:      1px solid #e1ddb7;
+  background:  #f3f1e4 50% 50% repeat-x;
+  font-weight: normal;
+}
+
+.ui-state-hover, .ui-state-focus {
+  color:       #212121;  
+  border:      1px solid #e1ddb7;
+  background:  #faf7f0 50% 50% repeat-x;
+  font-weight: normal;
+}
+
+.ui-state-active {
+  color:       #212121;  
+  border:      1px solid #e1ddb7;
+  background:  #f3f1e4 50% 50% repeat-x;
+  font-weight: normal;
+}
+
+.ui-state-disabled {
+  cursor:  default !important;
+  opacity: 0.7 !important;
+}
+
+/* Corner radius
+----------------------------------*/
+.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+  border-top-left-radius: 5px;  
+  -webkit-border-top-left-radius: 5px;
+}
+
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+  border-top-right-radius: 5px;  
+  -webkit-border-top-right-radius: 5px;
+}
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+  border-bottom-left-radius: 5px;  
+  -webkit-border-bottom-left-radius: 5px;
+}
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+  border-bottom-right-radius: 18px;  
+  -webkit-border-bottom-right-radius: 18px;
+}
+
+/* Specific to this app
+----------------------------------*/
+.ui-button-text-only .ui-button-text {
+  line-height: 1.2;
+  padding: 5px 8px 4px 7px;
+}
+
+#sun .ui-button-text { padding: 3px 4px 0px 3px; }
+#moon .ui-button-text { padding: 3px 5px 0px 4px; }
+#horizontal .ui-button-text, #vertical .ui-button-text { padding: 5px 7px 2px; }
+
+button.night {
+  background-color: #424236;
+  border: 1px solid #a19d77;
+}
+
+button.day {
+  background-color: #f3f1e4;
+  border: 1px solid #e1ddb7;
+}
+
+#sun, #horizontal { display: none; }
