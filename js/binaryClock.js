@@ -1,5 +1,5 @@
 
-/** global namespace object to house the entire widget */
+/** Global namespace object to house the entire widget. */
 var BINARYCLOCK = BINARYCLOCK || {};
 
 /**
@@ -54,7 +54,7 @@ BINARYCLOCK.colorPalettes = [
 ];
 
 /**
- * Registers default values for UI options
+ * Registers default values for UI options.
  */
 BINARYCLOCK.options = {
   titleDisplay:         true,
@@ -298,7 +298,7 @@ BINARYCLOCK.toggleLayout = function () {
 
       if ((i+1) % 6 === 0) {
         verticalOffset = 330;     // reset vertical offset
-        horizontalOffset += 150;  // shift right 100px
+        horizontalOffset += 150;  // shift right 150px
       }
     }
   } else {
@@ -379,10 +379,10 @@ BINARYCLOCK.toggleLayout = function () {
  */
 BINARYCLOCK.options.tab.init = function () {
 
-  var svgElem        = d3.select('#optionPanel').insert('svg:svg', '#optionControls'),
-      group          = svgElem.append('g'),
-      rectElem       = group.append('svg:rect'),
-      textElem       = group.append('text');
+  var svgElem  = d3.select('#optionPanel').insert('svg:svg', '#optionControls'),
+      group    = svgElem.append('g'),
+      rectElem = group.append('svg:rect'),
+      textElem = group.append('text');
   
   svgElem
     .attr('id', 'optionTab');
@@ -695,7 +695,7 @@ BINARYCLOCK.options.timeDigits.start = function () {
     $('#timeDisplay').append('<div id="m"><span class="label">m</span><span class="horizontal time"></span></div>');
     $('#timeDisplay').append('<div id="s"><span class="label">s</span><span class="horizontal time"></span></div>');
 
-    // fade in after a second so digits have a chance to update
+    // fade in after ~1 second so digits have a chance to update
     window.setTimeout(function () {
       $('#timeDisplay').css('opacity', 0);
       $('#timeDisplay').css('display', 'block');
@@ -709,7 +709,7 @@ BINARYCLOCK.options.timeDigits.start = function () {
     $('#timeDisplay').append('<div id="m"><span class="time"></span></div>');
     $('#timeDisplay').append('<div id="s"><span class="time"></span></div>');
 
-    // fade in after a second so digits have a chance to update
+    // fade in after ~1 second so digits have a chance to update
     window.setTimeout(function () {
       // workaround: jQuery's animate does not work on (display: -webkit-box)
       $('#timeDisplay').css('opacity', 0);
@@ -859,7 +859,6 @@ BINARYCLOCK.init = function () {
 
   "use strict";
 
-  // the variables below are defined in auxiliary.js
   var drawClock          = BINARYCLOCK.drawClock,                       // draws the clock widget onto the screen
       checkDisplay       = BINARYCLOCK.checkDisplay,                    // handles display & placement of UI components
       prepareOptionsTab  = BINARYCLOCK.options.tab.init,                // sets up options tab
@@ -944,14 +943,12 @@ BINARYCLOCK.init = function () {
        function checkBlock(unit, column) {
 
          var exp = Math.pow(2, column),
-             inc = exp,
-             i;
+             inc;
 
-         for (i = exp; i > 0; i -= 1) {
-           if (BINARYCLOCK.getCurrentTime(unit) % (exp * 2) === inc) {
+         for (inc = 0; inc < exp; inc += 1) {
+           if ( BINARYCLOCK.getCurrentTime(unit) % (exp * 2) === (inc + exp) ) {
              return true;
            }
-           inc += 1;
          }
 
          return false;
