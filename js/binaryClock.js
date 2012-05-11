@@ -75,6 +75,8 @@ BINARYCLOCK.options = {
  */
 BINARYCLOCK.drawClock = function () {
 
+  "use strict";
+
   var layout = BINARYCLOCK.options.layout,
       horizontalOffset,
       verticalOffset,
@@ -165,6 +167,8 @@ BINARYCLOCK.drawClock = function () {
  * then updates the UI to reflect that setting.
  */
 BINARYCLOCK.toggleMode = function () {
+
+  "use strict";
 
   var mode = BINARYCLOCK.options.mode;
 
@@ -263,6 +267,8 @@ BINARYCLOCK.toggleMode = function () {
  * then updates the UI to reflect that setting.
  */
 BINARYCLOCK.toggleLayout = function () {
+
+  "use strict";
 
   var layout     = BINARYCLOCK.options.layout,
       timeDigits = BINARYCLOCK.options.timeDigits,
@@ -410,6 +416,8 @@ BINARYCLOCK.options.tab.init = function () {
  */
 BINARYCLOCK.options.tab.hoverFunctionality = function () {
 
+  "use strict";
+
   var timer;
 
   // hide tab and display panel
@@ -496,6 +504,8 @@ BINARYCLOCK.options.tab.hoverFunctionality = function () {
  * into the page DOM, then creates UI functionality for all options.
  */
 BINARYCLOCK.options.panel.init = function () {
+
+  "use strict";
 
   var timeDigits = BINARYCLOCK.options.timeDigits,
       titleDisplay, layout,
@@ -640,6 +650,8 @@ BINARYCLOCK.options.panel.init = function () {
  */
 BINARYCLOCK.options.timeDigits.start = function () {
 
+  "use strict";
+
   var timeDigits = BINARYCLOCK.options.timeDigits,
       layout     = BINARYCLOCK.options.layout,
       triggerTimeUnitDisplay,
@@ -729,6 +741,8 @@ BINARYCLOCK.options.timeDigits.start = function () {
  */
 BINARYCLOCK.options.timeDigits.stop = function () {
 
+  "use strict";
+
   BINARYCLOCK.options.timeDigits.display = false;
   window.clearInterval(BINARYCLOCK.timeIntervalID);
 
@@ -750,6 +764,8 @@ BINARYCLOCK.options.timeDigits.stop = function () {
  */
 BINARYCLOCK.checkDisplay = function () {
 
+  "use strict";
+
   var width         = $(window).width(),
       height        = $(window).height(),
       layout        = BINARYCLOCK.options.layout,
@@ -766,7 +782,7 @@ BINARYCLOCK.checkDisplay = function () {
     // if title button isn't already disabled...
     if ($('#titleBtn').button('option', 'disabled') !== true) {
       // disable it
-      $('#titleBtn').button('option', 'disabled', true);  // jQuery BUG (?): doesn't work when page is initialized !!!
+      $('#titleBtn').button('option', 'disabled', true);
       // fade button label
       $('#titleBtnLabel').css('opacity', '0.9');
     }
@@ -791,7 +807,7 @@ BINARYCLOCK.checkDisplay = function () {
     // if button in option panel isn't already deactivated...
     if ($('#timeDisplayBtn').button('option', 'disabled') !== true) {
       // deactivate it
-      $('#timeDisplayBtn').button('option', 'disabled', true);  // jQuery BUG (?): doesn't work when page is initialized !!!
+      $('#timeDisplayBtn').button('option', 'disabled', true);
       // fade button label
       $('#timeDisplayBtnLabel').css('opacity', '0.9');
     }
@@ -1038,11 +1054,11 @@ BINARYCLOCK.init = function () {
   // bind clock display rules to window resize event
   $(window).resize(checkDisplay);
 
-  checkDisplay();
   drawClock();
   prepareOptionsTab();
   prepareOptionPanel();
   hoverFunctionality();
+  checkDisplay();
 
   // all is set up, now start the clock
   BINARYCLOCK.start();
