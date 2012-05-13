@@ -259,7 +259,7 @@ BINARYCLOCK.toggleMode = function () {
       $('#optionControls > div > span').css('color', '#6c6c6b');
     });
   }
-}
+};
 
 /**
  * Toggles between horizontal and vertical layouts.
@@ -373,7 +373,7 @@ BINARYCLOCK.toggleLayout = function () {
   // displayed after the layout is toggled
   // (applies to title display)
   BINARYCLOCK.checkDisplay();  
-}
+};
 
 /**
  * Initializes the options tab, i.e. creates an '#optionTab' <svg>
@@ -385,8 +385,10 @@ BINARYCLOCK.toggleLayout = function () {
  */
 BINARYCLOCK.options.tab.init = function () {
 
+  "use strict";
+
   var svgElem  = d3.select('#optionPanel').insert('svg:svg', '#optionControls'),
-      group    = svgElem.append('g'),
+      group    = svgElem.append('g').style('display', 'none'),
       rectElem = group.append('svg:rect'),
       textElem = group.append('text');
   
@@ -403,7 +405,10 @@ BINARYCLOCK.options.tab.init = function () {
     .attr('x', 101)
     .attr('y', 258)
     .text('options');
-}
+
+  // fades in to avoid flickering
+  $(group[0]).fadeIn();
+};
 
 /**
  * Defines hover functionality for options tab and panel.
@@ -426,7 +431,7 @@ BINARYCLOCK.options.tab.hoverFunctionality = function () {
       if ( $(this).attr('width') === '94' &&
            $('#optionControls').css('display') === 'none' ) {
 
-        clearTimeout(timer);  // in case tab is about to disappear
+        window.clearTimeout(timer);  // in case tab is about to disappear
         d3.select('#optionTab rect')
           .transition()
           .duration(800)
@@ -466,8 +471,8 @@ BINARYCLOCK.options.tab.hoverFunctionality = function () {
           });
 
         // hide tab after user hovers outside option panel
-        clearTimeout(timer);
-        timer = setTimeout(function() {
+        window.clearTimeout(timer);
+        timer = window.setTimeout(function() {
           if ( $('#optionControls').css('display') === 'none' ) {
             $('#optionTab').stop().animate({'opacity': 0});
           }
@@ -482,7 +487,7 @@ BINARYCLOCK.options.tab.hoverFunctionality = function () {
 
       // set timer when mouse moves for first time on new page
       if (timer === undefined) {
-        timer = setTimeout(function() {
+        timer = window.setTimeout(function() {
           $('#optionTab').stop().animate({'opacity': 0});
         }, 4000);
       }
@@ -490,8 +495,8 @@ BINARYCLOCK.options.tab.hoverFunctionality = function () {
       if ( $('#optionTab').css('opacity') === '0' ) {  // if tab isn't displayed
         $('#optionTab').animate({'opacity': 1});       // display it
 
-        clearTimeout(timer);
-        timer = setTimeout(function() {                // reset timer to hide tab in 2s
+        window.clearTimeout(timer);
+        timer = window.setTimeout(function() {         // reset timer to hide tab in 4s
           $('#optionTab').stop().animate({'opacity': 0});
         }, 4000);
       }
@@ -508,7 +513,7 @@ BINARYCLOCK.options.panel.init = function () {
   "use strict";
 
   var timeDigits = BINARYCLOCK.options.timeDigits,
-      titleDisplay, layout,
+      titleDisplay,
 
       // strings for setting up option elements in DOM
       titleString,timeDisplayString, numbersOnBlocksString, hrString, modeString, layoutString, controlStrings;
@@ -749,7 +754,7 @@ BINARYCLOCK.options.timeDigits.stop = function () {
   $('#timeDisplay').fadeOut('fast', function() {
     $('#timeDisplay').empty();
   });
-}
+};
 
 /**
  * Handles display & placement of UI components.
@@ -871,7 +876,7 @@ BINARYCLOCK.checkDisplay = function () {
  * This method assumes that the page's DOM has already been set up,
  * and is self-invoking.
  */
-BINARYCLOCK.init = function () {
+BINARYCLOCK.init = (function () {
 
   "use strict";
 
@@ -891,8 +896,6 @@ BINARYCLOCK.init = function () {
 
     var seconds = BINARYCLOCK.getCurrentTime('s'),
         minutes = BINARYCLOCK.getCurrentTime('m'),
-        hours   = BINARYCLOCK.getCurrentTime('h'),
-        start   = true,
         column,
         row;
 
@@ -1049,7 +1052,7 @@ BINARYCLOCK.init = function () {
         }
       }
     }
-  }  // end BINARYCLOCK._update
+  };  // end BINARYCLOCK._update
 
   // bind clock display rules to window resize event
   $(window).resize(checkDisplay);
@@ -1062,4 +1065,4 @@ BINARYCLOCK.init = function () {
 
   // all is set up, now start the clock
   BINARYCLOCK.start();
-}();
+}());
