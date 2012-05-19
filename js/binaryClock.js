@@ -965,7 +965,7 @@ BINARYCLOCK.init = (function () {
        * a block should be activated (i.e. filled in) based
        * on its position.
        *
-       * @param timeReading  The time reading for hours, minutes or seconds.
+       * @param timeReading  The reading for hours, minutes or seconds.
        * @param column       The column index.
        * @returns Boolean    Returns true if the block should
        *                     be activated, false otherwise.
@@ -1051,7 +1051,7 @@ BINARYCLOCK.init = (function () {
         updateBlock(2, column);
       }
 
-      // iterate through minute blocks if reading for seconds is 0
+      // iterate through minute blocks if seconds reading is 0
       if (BINARYCLOCK.seconds === 0) {
         // update minute reading
         BINARYCLOCK.minutes = BINARYCLOCK.getCurrentTime('m');
@@ -1059,7 +1059,7 @@ BINARYCLOCK.init = (function () {
           updateBlock(1, column);
         }
 
-        // iterate through hour blocks if reading for minutes is 0
+        // iterate through hour blocks if minutes reading is 0
         if (BINARYCLOCK.minutes === 0) {
           // update hour reading
           BINARYCLOCK.hours = BINARYCLOCK.getCurrentTime('h');
