@@ -13,6 +13,14 @@ BINARYCLOCK.start = function () {
   // a flag to identify when clock is drawn for the first time
   BINARYCLOCK.newDisplay = true;
 
+  // get initial time readings
+  BINARYCLOCK.hours   = BINARYCLOCK.getCurrentTime('h');
+  BINARYCLOCK.minutes = BINARYCLOCK.getCurrentTime('m');
+
+  // update clock at second intervals
+  if (typeof BINARYCLOCK.blockIntervalID === 'number') {
+    window.clearInterval(BINARYCLOCK.blockIntervalID);
+  }
   BINARYCLOCK.blockIntervalID = window.setInterval(function () {
     BINARYCLOCK._update();
   }, 1000);
@@ -176,7 +184,7 @@ BINARYCLOCK.toggleMode = function () {
   // if no style attribute is provided,
   // defaults to 'background-color'
   function toggleColor(element, color, attribute) {
-    if (attribute === undefined) {
+    if (typeof attribute === 'undefined') {
       attribute = 'background-color';
     }
 
@@ -302,7 +310,7 @@ BINARYCLOCK.toggleLayout = function () {
 
       verticalOffset -= 70;       // shift up 70px
 
-      if ((i+1) % 6 === 0) {
+      if ((i + 1) % 6 === 0) {
         verticalOffset = 330;     // reset vertical offset
         horizontalOffset += 150;  // shift right 150px
       }
@@ -326,7 +334,7 @@ BINARYCLOCK.toggleLayout = function () {
 
       horizontalOffset += 100;  // shift right 100px
 
-      if ((i+1) % 6 === 0) {
+      if ((i + 1) % 6 === 0) {
         verticalOffset += 100;  // shift down 100px
         horizontalOffset = 0;   // reset horizontal offset
       }
@@ -344,7 +352,7 @@ BINARYCLOCK.toggleLayout = function () {
   // they display according to updated layout
   if (timeDigits.display === true) {
     layout = BINARYCLOCK.options.layout;
-    if ( (layout === 'horizontal' && $(window).width() < 1125) || 
+    if ( (layout === 'horizontal' && $(window).width() < 1125) ||
          (layout === 'vertical' && $(window).height() < 545) ) {
       $('#timeDisplay').fadeOut(function () {
         if (layout === 'horizontal') {
@@ -372,7 +380,7 @@ BINARYCLOCK.toggleLayout = function () {
   // check display in case options can't be
   // displayed after the layout is toggled
   // (applies to title display)
-  BINARYCLOCK.checkDisplay();  
+  BINARYCLOCK.checkDisplay();
 };
 
 /**
@@ -391,7 +399,7 @@ BINARYCLOCK.options.tab.init = function () {
       group    = svgElem.append('g').style('display', 'none'),
       rectElem = group.append('svg:rect'),
       textElem = group.append('text');
-  
+
   svgElem
     .attr('id', 'optionTab');
   rectElem
@@ -406,8 +414,12 @@ BINARYCLOCK.options.tab.init = function () {
     .attr('y', 258)
     .text('options');
 
-  // fades in to avoid flickering
-  $(group[0]).fadeIn();
+  // 1 second delay synchronizes tab display
+  // with blocks upon first time reading
+  window.setTimeout(function () {
+    // fades in to avoid flickering
+    $(group[0]).fadeIn();
+  }, 1000);
 };
 
 /**
@@ -472,7 +484,7 @@ BINARYCLOCK.options.tab.hoverFunctionality = function () {
 
         // hide tab after user hovers outside option panel
         window.clearTimeout(timer);
-        timer = window.setTimeout(function() {
+        timer = window.setTimeout(function () {
           if ( $('#optionControls').css('display') === 'none' ) {
             $('#optionTab').stop().animate({'opacity': 0});
           }
@@ -481,13 +493,13 @@ BINARYCLOCK.options.tab.hoverFunctionality = function () {
     });
 
   // display tab if mouse moves; set timer to hide when still
-  $(document).mousemove(function() {
+  $(document).mousemove(function () {
 
     if ( $('#optionControls').css('display') === 'none' ) {  // if panel isn't displayed
 
       // set timer when mouse moves for first time on new page
-      if (timer === undefined) {
-        timer = window.setTimeout(function() {
+      if (typeof timer === 'undefined') {
+        timer = window.setTimeout(function () {
           $('#optionTab').stop().animate({'opacity': 0});
         }, 4000);
       }
@@ -496,7 +508,7 @@ BINARYCLOCK.options.tab.hoverFunctionality = function () {
         $('#optionTab').animate({'opacity': 1});       // display it
 
         window.clearTimeout(timer);
-        timer = window.setTimeout(function() {         // reset timer to hide tab in 4s
+        timer = window.setTimeout(function () {        // reset timer to hide tab in 4s
           $('#optionTab').stop().animate({'opacity': 0});
         }, 4000);
       }
@@ -516,7 +528,7 @@ BINARYCLOCK.options.panel.init = function () {
       titleDisplay,
 
       // strings for setting up option elements in DOM
-      titleString,timeDisplayString, numbersOnBlocksString, hrString, modeString, layoutString, controlStrings;
+      titleString, timeDisplayString, numbersOnBlocksString, hrString, modeString, layoutString, controlStrings;
 
   titleString           = '<div><span id="titleBtnLabel">hide</span><button id="titleBtn">title</button></div>';
   timeDisplayString     = '<div><span id="timeDisplayBtnLabel">show</span><button id="timeDisplayBtn">time display</button></div>';
@@ -660,46 +672,46 @@ BINARYCLOCK.options.timeDigits.start = function () {
   var timeDigits = BINARYCLOCK.options.timeDigits,
       layout     = BINARYCLOCK.options.layout,
       triggerTimeUnitDisplay,
-      timeUnits,
-      unit;
+      timeUnits;
 
   timeDigits.display = true;
 
   triggerTimeUnitDisplay = function () {
     BINARYCLOCK.timeIntervalID = window.setInterval(function () {
 
-      var currentTime, timeSelection;
+      var timeReading,
+          timeSelection;
 
       // iterate through the div elements, displaying time for each unit
       $.each(timeUnits, function (idx) {
 
-        window.setTimeout(function () {  // a slight (185 ms) delay
+        window.setTimeout(function () {  // a slight (150 ms) delay
                                          // is introduced, so digits
           switch (idx) {                 // are synchronized with blocks,
             case 0:                      // which fade in and out
-              unit = 'h';
+              timeReading = BINARYCLOCK.hours;
+              timeSelection = $('#h span.time');
               break;
             case 1:
-              unit = 'm';
+              timeReading = BINARYCLOCK.minutes;
+              timeSelection = $('#m span.time');
               break;
             case 2:
-              unit = 's';
+              timeReading = BINARYCLOCK.seconds;
+              timeSelection = $('#s span.time');
               break;
           }
 
-          currentTime = BINARYCLOCK.getCurrentTime(unit);
-          if (currentTime.toString().length < 2) {
-            currentTime = '0' + currentTime;
+          if (timeReading.toString().length < 2) {
+            timeReading = '0' + timeReading;
           }
-
-          timeSelection = $('#' + unit + ' span.time');
 
           if (timeSelection.text() === '' ||          // required for start, when no text is displayed
-              timeSelection.text() != currentTime) {  // implicit typecasting
+              timeSelection.text() != timeReading) {  // implicit typecasting
 
-            timeSelection.text(currentTime);
+            timeSelection.text(timeReading);
           }
-        }, 185);  // end setTimeout
+        }, 150);  // end setTimeout
       });
     }, 1000);     // end setInterval
   };
@@ -751,7 +763,7 @@ BINARYCLOCK.options.timeDigits.stop = function () {
   BINARYCLOCK.options.timeDigits.display = false;
   window.clearInterval(BINARYCLOCK.timeIntervalID);
 
-  $('#timeDisplay').fadeOut('fast', function() {
+  $('#timeDisplay').fadeOut('fast', function () {
     $('#timeDisplay').empty();
   });
 };
@@ -779,7 +791,7 @@ BINARYCLOCK.checkDisplay = function () {
       titleDisplay  = BINARYCLOCK.options.titleDisplay;
 
   // hide title if not enough vertical or horizontal space
-  if ( (layout === 'horizontal' && (height < 590 || width < 650)) || 
+  if ( (layout === 'horizontal' && (height < 590 || width < 650)) ||
        (layout === 'vertical' && (height < 630 || width < 522)) ) {
     if (titleDisplay === true) {
       $('h1').fadeOut();
@@ -806,7 +818,7 @@ BINARYCLOCK.checkDisplay = function () {
   }
 
   // hide time digits if there is not enough space to display them
-  if ( (layout === 'horizontal' && width < 1125) || 
+  if ( (layout === 'horizontal' && width < 1125) ||
        (layout === 'vertical' && height < 545) ) {
     $('#timeDisplay').fadeOut();
     // if button in option panel isn't already deactivated...
@@ -894,10 +906,10 @@ BINARYCLOCK.init = (function () {
    */
   BINARYCLOCK._update = function () {
 
-    var seconds = BINARYCLOCK.getCurrentTime('s'),
-        minutes = BINARYCLOCK.getCurrentTime('m'),
-        column,
-        row;
+    var column, row;
+
+    // update seconds reading
+    BINARYCLOCK.seconds = BINARYCLOCK.getCurrentTime('s');
 
     /**
      * Updates the display for an individual block.
@@ -912,18 +924,18 @@ BINARYCLOCK.init = (function () {
      *
      * @param row     The row index (0 - 2). There are 3 rows from
      *                top to bottom: hour, minute, and second.
-     * @param column  The specified column of the grid, whereby each column
-     *                represents a quantity of 1, 2, 4, 8, etc.
+     * @param column  The specified column of the grid, whereby each
+     *                column represents a quantity of 1, 2, 4, 8, etc.
      */
     function updateBlock(row, column) {
 
-      var unit,  // 'h', 'm', or 's', depending on the given row
+      var unit,  // the timestamp for hours, minutes or seconds, depending on the given row
           groupElements = d3.select('#clockWidget').selectAll('g');  // gets all 18 <g> elements
 
       /**
        * Fades a block in or out.
        *
-       * @param toggle  Accepts 'in' or 'out' as valid parameters.
+       * @param toggle  Accepts 'in' or 'out' as parameters.
        * @param row     The row index.
        * @param column  The column index.       
        */
@@ -954,24 +966,24 @@ BINARYCLOCK.init = (function () {
        * a block should be activated (i.e. filled in) based
        * on its position.
        *
-       * @param unit       Accepts 'h', 'm', or 's'.
-       * @param column     The column index.
-       * @returns Boolean  Returns true if the block should
-       *                   be activated, false otherwise.
+       * @param timeReading  The time reading for hours, minutes or seconds.
+       * @param column       The column index.
+       * @returns Boolean    Returns true if the block should
+       *                     be activated, false otherwise.
        */
-       function checkBlock(unit, column) {
+      function checkBlock(timeReading, column) {
 
-         var exp = Math.pow(2, column),
-             inc;
+        var exp = Math.pow(2, column),
+            inc;
 
-         for (inc = 0; inc < exp; inc += 1) {
-           if ( BINARYCLOCK.getCurrentTime(unit) % (exp * 2) === (inc + exp) ) {
-             return true;
-           }
-         }
+        for (inc = 0; inc < exp; inc += 1) {
+          if ( timeReading % (exp * 2) === (inc + exp) ) {
+            return true;
+          }
+        }
 
-         return false;
-       }
+        return false;
+      }
 
       /**
        * Toggles the display of a number on a block.
@@ -1001,15 +1013,15 @@ BINARYCLOCK.init = (function () {
       }
 
       switch (row) {
-      case 0:
-        unit = 'h';
-        break;
-      case 1:
-        unit = 'm';
-        break;
-      case 2:
-        unit = 's';
-        break;
+        case 0:
+          unit = BINARYCLOCK.hours;
+          break;
+        case 1:
+          unit = BINARYCLOCK.minutes;
+          break;
+        case 2:
+          unit = BINARYCLOCK.seconds;
+          break;
       }
 
       if (checkBlock(unit, column)) {
@@ -1039,13 +1051,19 @@ BINARYCLOCK.init = (function () {
       for (column = 5; column >= 0; column -= 1) {
         updateBlock(2, column);
       }
+
       // iterate through minute blocks if reading for seconds is 0
-      if (seconds === 0) {
+      if (BINARYCLOCK.seconds === 0) {
+        // update minute reading
+        BINARYCLOCK.minutes = BINARYCLOCK.getCurrentTime('m');
         for (column = 5; column >= 0; column -= 1) {
           updateBlock(1, column);
         }
+
         // iterate through hour blocks if reading for minutes is 0
-        if (minutes === 0) {
+        if (BINARYCLOCK.minutes === 0) {
+          // update hour reading
+          BINARYCLOCK.hours = BINARYCLOCK.getCurrentTime('h');
           for (column = 5; column >= 0; column -= 1) {
             updateBlock(0, column);
           }
@@ -1056,6 +1074,27 @@ BINARYCLOCK.init = (function () {
 
   // bind clock display rules to window resize event
   $(window).resize(checkDisplay);
+
+  // stop the clock from updating if the window is not in focus
+  $(window).blur(function () {
+    window.clearInterval(BINARYCLOCK.blockIntervalID);
+    BINARYCLOCK.blockIntervalID = undefined;
+
+    if (BINARYCLOCK.options.timeDigits.display === true) {
+      window.clearInterval(BINARYCLOCK.timeIntervalID);
+      BINARYCLOCK.timeIntervalID = undefined;
+    }
+  });
+
+  // start updating clock if the window becomes in focus
+  $(window).focus(function () {
+    BINARYCLOCK.start();
+
+    if (BINARYCLOCK.options.timeDigits.display === true) {
+      $('#timeDisplay').empty();
+      BINARYCLOCK.options.timeDigits.start();
+    }
+  });
 
   drawClock();
   prepareOptionsTab();

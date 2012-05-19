@@ -16,9 +16,10 @@ body#night {
 }
 
 h1 {
-  margin:    55px;
-  display:   none;
-  font-size: 60px;  
+  margin:      55px;
+  display:     none;
+  font-size:   60px;
+  font-weight: normal; 
 }
 
 hr {
