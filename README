@@ -1,0 +1,16 @@
+This project exists as a packaged app for Chrome.
+
+  • https://chrome.google.com/webstore/detail/ekbcoldneockcgfnaekhbpkigajjfneb
+
+The application includes feature options such as toggling display of digits,
+horizontal / vertical layout, and daytime / nighttime mode.
+
+Please see:
+
+  Explanation of the algorithm:
+
+    • https://github.com/tgiunipero/binary-clock/wiki/Explanation-of-the-algorithm
+
+  Application namespace structure:
+
+    • https://github.com/tgiunipero/binary-clock/wiki/Application-namespace-structure
