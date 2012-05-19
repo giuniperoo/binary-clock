@@ -415,9 +415,8 @@ BINARYCLOCK.options.tab.init = function () {
     .text('options');
 
   // 1 second delay synchronizes tab display
-  // with blocks upon first time reading
+  // with blocks upon initial time reading
   window.setTimeout(function () {
-    // fades in to avoid flickering
     $(group[0]).fadeIn();
   }, 1000);
 };
