@@ -928,7 +928,7 @@ BINARYCLOCK.init = (function () {
      */
     function updateBlock(row, column) {
 
-      var unit,  // the timestamp for hours, minutes or seconds, depending on the given row
+      var timeReading,  // the reading for hours, minutes or seconds, depending on the given row
           groupElements = d3.select('#clockWidget').selectAll('g');  // gets all 18 <g> elements
 
       /**
@@ -1013,17 +1013,17 @@ BINARYCLOCK.init = (function () {
 
       switch (row) {
         case 0:
-          unit = BINARYCLOCK.hours;
+          timeReading = BINARYCLOCK.hours;
           break;
         case 1:
-          unit = BINARYCLOCK.minutes;
+          timeReading = BINARYCLOCK.minutes;
           break;
         case 2:
-          unit = BINARYCLOCK.seconds;
+          timeReading = BINARYCLOCK.seconds;
           break;
       }
 
-      if (checkBlock(unit, column)) {
+      if (checkBlock(timeReading, column)) {
         fade('in', row, column);
         if (BINARYCLOCK.options.numbersOnBlocks) {
           toggleNumber('show', row, column);
