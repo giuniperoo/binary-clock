@@ -448,7 +448,7 @@ BINARYCLOCK.options.tab.hoverFunctionality = function () {
           .duration(800)
           .attr('width', 275)
           .attr('height', 275)
-          .attr('fill-opacity', '0.9')
+       // .attr('fill-opacity', '0.9')  (see below)
           .attr('x', 0)
           .attr('y', 20)
           .attr('rx', 13)
@@ -458,8 +458,10 @@ BINARYCLOCK.options.tab.hoverFunctionality = function () {
         $('#optionControls')
           .delay(800)
           .fadeIn();
-      }
-    });
+        $('#optionTab rect')             // when added to the above d3 transition,
+          .attr('fill-opacity', '0.9');  // modifying opacity results in the item
+      }                                  // flashing transparent before fading
+    });                                  // during initial execution.
 
   // hide panel and redisplay tab
   $('#optionControls')
