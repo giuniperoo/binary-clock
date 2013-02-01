@@ -1,0 +1,292 @@
+html {
+  height: 100%;
+  background: #f1eedc url('../resources/img/grit.png') repeat;
+  -moz-transition: background 0.5s ease;
+  -webkit-transition: background 0.5s ease;
+
+  &#day {
+    body { background-color: #fcfbf7; }
+    #optionTab { background: #f1eedc url('../resources/img/grit.png') repeat right; }
+    hr { background-color: #cfccab; }
+    div#controls span, div#optionTabText { color: #6c6c6c; }
+  }
+
+  &#night {
+    background: #434237 url('../resources/img/grit.png') repeat;
+    body { background-color: #191919; }
+    #optionTab { background: #434237 url('../resources/img/grit.png') repeat right; }
+    hr { background-color: #7c7961; }
+    div#controls span, div#optionTabText { color: #aaa; }
+  }
+}
+
+body {
+  font-family: 'Raleway';
+  border-radius: 10px;
+  background: #fcfbf7;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  color: #6c6c6c;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -moz-transition: background 0.5s ease;
+  -webkit-transition: background 0.5s ease;
+}
+
+h1 {
+  margin: 0;
+  padding: 80px;
+  text-shadow: 2px 2px 5px #555555;
+  font-size: 75px;
+  font-weight: normal;
+  font-family: 'Dancing Script';
+}
+
+
+/**  Styles for blocks and time digits  **/
+div#clockWidget, div#timeDisplay {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+}
+
+div#clockWidget {
+  margin-top: -200px;
+  margin-left: -300px;
+  height: 400;
+  width: 600;
+}
+
+div#timeDisplay {
+  display: none;
+  letter-spacing: 2px;
+  font-family: 'Raleway Thin';
+
+  &.horizontal {
+    width: 150px;
+    margin-top: -150px;
+    margin-left: -515px;
+
+    div { height: 100px; }
+  }
+
+  &.vertical {
+    width: 448px;
+    margin-top: 230px;
+    margin-left: -224px;
+    display: -webkit-box;
+
+    div {
+      display: -webkit-box;
+      -webkit-box-pack: center;
+      -webkit-box-align: center;
+      -webkit-box-flex: 1;
+    }
+  }
+
+  span {
+    &.label {
+      float: left;
+      font-size: 40px;
+      line-height: 95px;
+    }
+
+    &.time { font-size: 35px; }
+
+    &.horizontal {
+      float: right;
+      line-height: 100px;
+    }
+  }
+}
+
+div.block {
+  border-radius: 8px;
+  width: 67px;
+  height: 27px;
+  text-align: center;
+  display: inline-block;
+  line-height: 27px;
+  font-size: 18px;
+  -moz-transition:background 0.2s ease-in;
+  -webkit-transition:background 0.2s ease-in;
+
+  &.row2 {
+    border: 3px solid #a0a078;
+    background: #b8b690 url('../resources/img/grit.png') repeat;
+
+    &.dark { background: #b8b690 url('../resources/img/grit.png') repeat; }
+    &.light { background: rgba(244, 243, 235, 0.1) url('../resources/img/grit.png') repeat; }
+  }
+
+  &.row1 {
+    border: 3px solid #c85b2c;
+    background: #d97036 url('../resources/img/grit.png') repeat;
+
+    &.dark { background: #d97036 url('../resources/img/grit.png') repeat; }
+    &.light { background: rgba(248, 236, 226, 0.1) url('../resources/img/grit.png') repeat; }
+  }
+
+  &.row0 {
+    border: 3px solid #c3c19b;
+    background: #e2ddb7 url('../resources/img/grit.png') repeat;
+
+    &.dark { background: #e2ddb7 url('../resources/img/grit.png') repeat; }
+    &.light { background: rgba(248, 247, 239, 0.1) url('../resources/img/grit.png') repeat; }
+  }
+
+  > span { color: #444; }
+}
+
+
+/**  Styles for options  **/
+div#optionTab {
+  background: #f1eedc url('../resources/img/grit.png') repeat right;
+  letter-spacing: 2px;
+  top: 50%;
+  left: 100%;
+  position: absolute;
+  margin-top: -47px;
+  margin-left: -26px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  height: 94px;
+  width: 44px;
+  cursor: default;
+  -moz-transition: background 0.5s ease;
+  -webkit-transition: background 0.5s ease;
+  -webkit-backface-visibility: hidden;  /* eliminates trailing border lines during animation */
+}                                       /* http://stackoverflow.com/questions/12273528/trailing-border-lines-in-chrome */
+
+div#optionTabText {
+  margin-top: 46px;
+  margin-left: -5px;
+  -moz-transform: rotate(270deg);
+  -webkit-transform: rotate(270deg);
+}
+
+div#controls {
+  width: 213px;
+  display: none;
+  position: relative;
+  padding: 15px 0 15px 15px;
+
+  span {
+    display: inline-block;
+    letter-spacing: 1px;
+
+    &.disabled { opacity: 0.7; }
+  }
+
+  &.dark {
+    span.disabled { opacity: 0.4; }
+
+    button {
+      color: #aaa;
+      background-color: #424236;
+      border: 1px solid #7c7961;
+
+      &:hover { background-color: #323226; }
+
+      &[disabled] {
+        opacity: 0.4;
+
+        &:hover, &:focus, &:active {
+          color: #aaa;
+          background-color: #424236;
+        }
+      }
+    }
+  }
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  margin-right: 2px;
+  background-color: #cfccab;
+}
+
+span#titleBtnLabel,
+span#timeDisplayBtnLabel,
+span#blockNumberBtnLabel {
+  width: 46px;
+}
+
+div#mode span, div#layout span {
+  width: 135px;
+  float: left;
+}
+
+div#mode {
+  &.day span { line-height: 58px; }
+  &.night span { line-height: 57px; }
+}
+
+div#layout {
+  &.horizontal span { line-height: 56px; }
+  &.vertical span { line-height: 45px; }
+}
+
+
+/** Styles for option panel buttons **/
+button {
+  color: #6c6c6c;
+  font-size: .9em;
+  font-family: 'Raleway';
+  letter-spacing: 1px;
+  margin: 4px 0;
+  cursor: pointer;
+  -moz-transition: background 0.4s ease;
+  -webkit-transition: background 0.4s ease;
+  border: 1px solid #cfccab; 
+  background-color: #f3f1e4;
+  border-radius: 6px;
+  line-height: 1.2;
+  padding: 5px;
+
+  &:hover, &:focus, &:active {
+    color: #444;
+    background-color: #faf7f0;
+  }
+
+  &:active { background-color: #f3f1e4; }
+
+  &[disabled] {
+    cursor: default;
+    opacity: 0.6;
+
+    &:hover, &:focus, &:active {
+      color: #6C6C6C;
+      background-color: #f3f1e4;
+    }
+  }
+
+  &#sun { padding: 3px 4px 0px 3px; }
+  &#moon { padding: 3px 5px 0px 4px; }
+
+  &#vertical, &#horizontal { padding: 5px 7px 2px; }
+  &#horizontal { margin-right: 0; }
+  
+  &#sun, &#horizontal { display: none; }
+}
+
+
+/**  Import fonts  **/
+@font-face {
+  font-family: 'Raleway Thin';
+  src: local('Raleway-Thin'), url('../resources/font/Raleway-Thin.ttf');
+}
+
+@font-face {
+  font-family: 'Raleway';
+  src: local('Raleway-Light'), url('../resources/font/Raleway-Light.ttf');
+}
+
+@font-face {
+  font-family: 'Dancing Script';
+  src: local('Dancing-Script'), url('../resources/font/Dancing-Script.ttf');
+}
