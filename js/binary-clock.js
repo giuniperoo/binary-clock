@@ -86,10 +86,8 @@ BINARYCLOCK.drawClock = function () {
 
   var layout = BINARYCLOCK.options.layout,
       clockWidget = $('#clockWidget'),
-      horizontalOffset = 0,
-      horizontalSpace = 13,
-      verticalOffset = 50,
-      verticalSpace = 34,
+      hOffset = 0, vOffset = 50,
+      hSpace = 13, vSpace = 34,
       column, row,
       block, span;
 
@@ -103,16 +101,16 @@ BINARYCLOCK.drawClock = function () {
         .addClass('block')
         .addClass('row' + row)
         .css('position', 'absolute')
-        .css('left', horizontalOffset + horizontalSpace)
-        .css('top', verticalOffset + verticalSpace)
+        .css('left', hOffset + hSpace)
+        .css('top', vOffset + vSpace)
         .append(span);
 
       clockWidget.append(block);
 
-      horizontalOffset += 100;  // shift right 100px
+      hOffset += 100;  // shift right 100px
     }
-    verticalOffset += 100;      // shift down 100px
-    horizontalOffset = 0;       // reset horizontal offset
+    vOffset += 100;    // shift down 100px
+    hOffset = 0;       // reset horizontal offset
   }
 };
 
@@ -121,7 +119,7 @@ BINARYCLOCK.drawClock = function () {
  * This method switches the setting at BINARYCLOCK.options.mode,
  * then updates the UI to reflect that setting.
  */
-BINARYCLOCK.toggleMode = function (context) {
+BINARYCLOCK.toggleMode = function () {
 
   "use strict";
 
@@ -181,10 +179,10 @@ BINARYCLOCK.toggleLayout = function () {
       horizontalBtn = $('button#horizontal'),
       verticalBtn   = $('button#vertical'),
 
-      horizontalSpace = 13,
-      verticalSpace = 34,
-      horizontalOffset = (layout === 'horizontal') ? 100 : 0,
-      verticalOffset = (layout === 'horizontal') ? 330 : 50,
+      hBaseOffset = 13,
+      vBaseOffset = 14,
+      hOffset = (layout === 'horizontal') ? 113 : hBaseOffset,
+      vOffset = (layout === 'horizontal') ? vBaseOffset : 84,
 
       timeDigitTemplate,
       labelText,
@@ -222,15 +220,15 @@ BINARYCLOCK.toggleLayout = function () {
 
     for (i = 0, len = blocks.length; i < len; i += 1) {
       $(blocks[i]).animate({
-        'top': verticalOffset + verticalSpace,
-        'left': horizontalOffset + horizontalSpace
+        'top': vOffset,
+        'left': hOffset
       }, 1000);
 
-      verticalOffset -= 70;       // shift up 70px
+      vOffset += 70;            // shift down 70px
 
       if ((i + 1) % 6 === 0) {
-        verticalOffset = 330;     // reset vertical offset
-        horizontalOffset += 150;  // shift right 150px
+        hOffset += 150;         // shift right 150px
+        vOffset = vBaseOffset;  // reset vertical offset
       }
     }
   } else {
@@ -238,15 +236,15 @@ BINARYCLOCK.toggleLayout = function () {
 
     for (i = 0, len = blocks.length; i < len; i += 1) {
       $(blocks[i]).animate({
-        'top': verticalOffset + verticalSpace,
-        'left': horizontalOffset + horizontalSpace
+        'top': vOffset,
+        'left': hOffset
       }, 1000);
 
-      horizontalOffset += 100;  // shift right 100px
+      hOffset += 100;           // shift right 100px
 
       if ((i + 1) % 6 === 0) {
-        verticalOffset += 100;  // shift down 100px
-        horizontalOffset = 0;   // reset horizontal offset
+        vOffset += 100;         // shift down 100px
+        hOffset = hBaseOffset;  // reset horizontal offset
       }
     }
   }
@@ -771,9 +769,9 @@ BINARYCLOCK.init = (function () {
      * is rendered as solid based on the current time.
      *
      * This method contains the following auxiliary functions:
-     *   ‣ fade          (displays or hides blocks)
-     *   ‣ checkBlock    (checks whether block is active)
-     *   ‣ toggleNumber  (displays or hides digits on blocks (for 'numbers on blocks' option))
+     *   * fade          (displays or hides blocks)
+     *   * checkBlock    (checks whether block is active)
+     *   * toggleNumber  (displays or hides digits on blocks (for 'numbers on blocks' option))
      *
      * @param row     The row index (0 - 2). There are 3 rows from
      *                top to bottom: hour, minute, and second.
@@ -819,11 +817,12 @@ BINARYCLOCK.init = (function () {
        */
       function checkBlock(timeReading, column) {
 
-        var exp = Math.pow(2, column),
+        var max = 5,  // max number of columns, zero-based
+            exp = Math.pow(2, max - column),
             inc;
 
         for (inc = 0; inc < exp; inc += 1) {
-          if ( timeReading % (exp * 2) === (inc + exp) ) {
+          if (timeReading % (exp * 2) === (inc + exp)) {
             return true;
           }
         }
@@ -841,13 +840,14 @@ BINARYCLOCK.init = (function () {
        */
       function toggleNumber(toggle, row, column) {
 
-        var exp, textElement;
+        var exp, textElement,
+            max = 5;  // max number of columns, zero-based
 
         // get <span> element based on given column and row
         textElement = $(blocks[(row * 6) + column]).find('span');
 
         if (toggle === 'show') {
-          exp = Math.pow(2, column);
+          exp = Math.pow(2, max - column);
           textElement
             .text(exp)
             .fadeIn();
@@ -921,26 +921,26 @@ BINARYCLOCK.init = (function () {
   // bind clock display rules to window resize event
   $(window).resize(checkDisplay);
 
-  // stop the clock from updating if the window is not in focus
-  $(window).blur(function () {
-    window.clearInterval(BINARYCLOCK.blockIntervalID);
-    BINARYCLOCK.blockIntervalID = undefined;
-
-    if (BINARYCLOCK.options.timeDigits.display === true) {
-      window.clearInterval(BINARYCLOCK.timeIntervalID);
-      BINARYCLOCK.timeIntervalID = undefined;
-    }
-  });
-
-  // start updating clock if the window becomes in focus
-  $(window).focus(function () {
-    BINARYCLOCK.start();
-
-    if (BINARYCLOCK.options.timeDigits.display === true) {
-      $('#timeDisplay').empty();
-      BINARYCLOCK.options.timeDigits.start();
-    }
-  });
+  // // stop the clock from updating if the window is not in focus
+  // $(window).blur(function () {
+  //   window.clearInterval(BINARYCLOCK.blockIntervalID);
+  //   BINARYCLOCK.blockIntervalID = undefined;
+  // 
+  //   if (BINARYCLOCK.options.timeDigits.display === true) {
+  //     window.clearInterval(BINARYCLOCK.timeIntervalID);
+  //     BINARYCLOCK.timeIntervalID = undefined;
+  //   }
+  // });
+  // 
+  // // start updating clock if the window becomes in focus
+  // $(window).focus(function () {
+  //   BINARYCLOCK.start();
+  // 
+  //   if (BINARYCLOCK.options.timeDigits.display === true) {
+  //     $('#timeDisplay').empty();
+  //     BINARYCLOCK.options.timeDigits.start();
+  //   }
+  // });
 
   drawClock();
   prepareOptionsTab();
