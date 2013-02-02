@@ -921,27 +921,6 @@ BINARYCLOCK.init = (function () {
   // bind clock display rules to window resize event
   $(window).resize(checkDisplay);
 
-  // // stop the clock from updating if the window is not in focus
-  // $(window).blur(function () {
-  //   window.clearInterval(BINARYCLOCK.blockIntervalID);
-  //   BINARYCLOCK.blockIntervalID = undefined;
-  // 
-  //   if (BINARYCLOCK.options.timeDigits.display === true) {
-  //     window.clearInterval(BINARYCLOCK.timeIntervalID);
-  //     BINARYCLOCK.timeIntervalID = undefined;
-  //   }
-  // });
-  // 
-  // // start updating clock if the window becomes in focus
-  // $(window).focus(function () {
-  //   BINARYCLOCK.start();
-  // 
-  //   if (BINARYCLOCK.options.timeDigits.display === true) {
-  //     $('#timeDisplay').empty();
-  //     BINARYCLOCK.options.timeDigits.start();
-  //   }
-  // });
-
   drawClock();
   prepareOptionsTab();
   prepareOptionPanel();
