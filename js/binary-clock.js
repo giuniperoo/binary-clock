@@ -587,14 +587,11 @@ BINARYCLOCK.options.timeDigits.start = function () {
 
     timeDisplay.removeClass('vertical')
                .addClass('horizontal')
-               .append(template);
+               .append(template)
 
-    // fade in after ~1 second so digits have a chance to update
-    window.setTimeout(function () {
-      timeDisplay.css('opacity', 0)
-                 .css('display', 'block')
-                 .animate({opacity: 1});
-    }, 1100);
+               // fade in after ~1s so digits display
+               // in sync with 'h' 'm' 's' labels
+               .delay(1100).fadeIn();
 
   } else {
     template = '<div id="h"><span class="time"></span></div>' +
@@ -603,15 +600,8 @@ BINARYCLOCK.options.timeDigits.start = function () {
 
     timeDisplay.removeClass('horizontal')
                .addClass('vertical')
-               .append(template);
-
-    // fade in after ~1 second so digits have a chance to update
-    window.setTimeout(function () {
-      // workaround: $.animate does not work on (display: -webkit-box)
-      timeDisplay.css('opacity', 0)
-                 .css('display', '-webkit-box')
-                 .animate({opacity: 1});
-    }, 1100);
+               .append(template)
+               .delay(1100).fadeIn();
   }
 
   // get a handle on DOM elements for hour, minute, second units
